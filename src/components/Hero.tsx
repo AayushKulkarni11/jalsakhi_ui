@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Sprout, ArrowDown, Cpu, Wifi, Database, Leaf, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Sprout, ArrowDown, Cpu, Wifi, Database, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const appImages = [
   '/images/WhatsApp Image 2026-02-22 at 12.13.31.jpeg',
@@ -180,7 +180,7 @@ export default function Hero() {
                           drag="x"
                           dragConstraints={{ left: 0, right: 0 }}
                           dragElastic={1}
-                          onDragEnd={(e, { offset, velocity }) => {
+                          onDragEnd={(_, { offset, velocity }) => {
                             const swipe = Math.abs(offset.x) * velocity.x
                             if (swipe < -10000) {
                               nextImage()
