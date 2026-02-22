@@ -1,149 +1,109 @@
 import { motion } from 'framer-motion'
-import { Brain, Server, Smartphone, Database, Leaf, Globe, CheckCircle } from 'lucide-react'
+import { Sprout, Leaf, Award, Users, Cpu, Globe } from 'lucide-react'
 
-const technologies = [
-  { icon: Brain, name: 'ML Models', desc: 'FastAPI microservices for predictions' },
-  { icon: Server, name: 'Local Gateway', desc: 'Node.js secure proxy server' },
-  { icon: Smartphone, name: 'Mobile App', desc: 'React Native (Expo)' },
-  { icon: Database, name: 'Data Storage', desc: 'MongoDB backend' },
+const stats = [
+  { icon: Users, value: '50K+', label: 'Farmers Served', gradient: 'from-green-500 to-emerald-600' },
+  { icon: Cpu, value: '12+', label: 'AI Models', gradient: 'from-blue-500 to-cyan-600' },
+  { icon: Globe, value: '500+', label: 'Villages', gradient: 'from-purple-500 to-violet-600' },
+  { icon: Award, value: '98%', label: 'Accuracy', gradient: 'from-amber-500 to-orange-600' },
+]
+
+const timeline = [
+  { year: '2023', title: 'Foundation', description: 'JalSakhi started with a vision to revolutionize Indian agriculture through AI.' },
+  { year: '2024', title: 'AI Integration', description: 'Launched ML models for crop recommendations and soil moisture forecasting.' },
+  { year: '2025', title: 'Scale Up', description: 'Expanded to 500+ villages with real-time water management solutions.' },
+  { year: '2026', title: 'Innovation', description: 'Introduced village-level water allocation optimizer and advanced analytics.' },
 ]
 
 export default function About() {
   return (
-    <section id="about" className="section bg-slate-800/50 relative overflow-hidden">
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }} />
+    <section id="about" className="relative py-24 bg-gradient-to-br from-green-50 via-white to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 overflow-hidden">
+      <div className="absolute inset-0">
+        <div className="absolute top-40 right-20 w-96 h-96 bg-green-200/30 dark:bg-green-900/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-40 left-20 w-96 h-96 bg-blue-200/30 dark:bg-blue-900/20 rounded-full blur-3xl" />
       </div>
 
-      <div className="container-custom relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Left Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <motion.span
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+      <div className="container-custom relative z-10 px-4 md:px-8">
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-700 mb-4">
+            <Leaf className="w-4 h-4 text-green-600 dark:text-green-400" />
+            <span className="text-green-700 dark:text-green-400 text-sm font-medium">About JalSakhi</span>
+          </motion.div>
+          <h2 className="text-3xl md:text-5xl font-bold font-['Outfit'] text-slate-800 dark:text-white mb-4">
+            Empowering Indian <span className="gradient-text">Farmers</span>
+          </h2>
+          <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+            We combine cutting-edge AI technology with deep understanding of Indian agriculture to help farmers increase yields and conserve water.
+          </p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-4 gap-6 mb-16">
+          {stats.map((stat, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="inline-block px-4 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-medium mb-4"
+              transition={{ delay: index * 0.1 }}
+              className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-3xl p-6 border border-slate-100 dark:border-slate-700 shadow-lg text-center"
             >
-              About Us
-            </motion.span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold font-['Outfit'] mb-6">
-              Revolutionizing Water{' '}
-              <span className="gradient-text">Management</span>
-            </h2>
-            <p className="text-lg text-slate-400 mb-8 leading-relaxed">
-              JalSakhi is an end-to-end smart water management platform designed specifically 
-              for farmers and village administrators. We combine cutting-edge ML technology with 
-              intuitive mobile interfaces to deliver actionable insights.
-            </p>
-
-            {/* Mission points */}
-            <div className="space-y-4">
-              {[
-                'Empowering farmers with data-driven water recommendations',
-                'Optimizing village-level water allocation',
-                'Promoting sustainable agricultural practices',
-                'Making advanced technology accessible to rural communities',
-              ].map((point, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="flex items-start gap-3"
-                >
-                  <CheckCircle className="w-5 h-5 text-emerald-400 mt-1 flex-shrink-0" />
-                  <span className="text-slate-300">{point}</span>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Right Content - Visual */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="relative"
-          >
-            {/* Main visual */}
-            <div className="relative">
-              {/* Gradient background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-sky-500/20 to-emerald-500/20 rounded-3xl blur-3xl" />
-              
-              {/* Card content */}
-              <div className="relative glass rounded-3xl p-8 border border-slate-700/50">
-                <h3 className="text-xl font-bold font-['Outfit'] mb-6 text-white">
-                  Our Technology Stack
-                </h3>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  {technologies.map((tech, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.1 }}
-                      className="bg-slate-800/50 rounded-xl p-4 hover:bg-slate-800 transition-colors"
-                    >
-                      <div className="w-10 h-10 rounded-lg bg-sky-500/20 flex items-center justify-center mb-3">
-                        <tech.icon className="w-5 h-5 text-sky-400" />
-                      </div>
-                      <div className="font-semibold text-white text-sm">{tech.name}</div>
-                      <div className="text-xs text-slate-400">{tech.desc}</div>
-                    </motion.div>
-                  ))}
-                </div>
-
-                {/* Bottom badges */}
-                <div className="flex flex-wrap gap-3 mt-6">
-                  {['FastAPI', 'React Native', 'Node.js', 'Python', 'TypeScript'].map((tech, index) => (
-                    <span
-                      key={index}
-                      className="px-3 py-1 bg-slate-700/50 rounded-full text-xs text-slate-300"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
+              <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center mx-auto mb-4 shadow-lg`}>
+                <stat.icon className="w-7 h-7 text-white" />
               </div>
-
-              {/* Floating badge */}
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 3, repeat: Infinity }}
-                className="absolute -top-4 -right-4 glass rounded-2xl p-4 border border-sky-500/30"
-              >
-                <div className="flex items-center gap-2">
-                  <Globe className="w-5 h-5 text-sky-400" />
-                  <span className="text-sm font-medium text-white">PAN India</span>
-                </div>
-              </motion.div>
-
-              <motion.div
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 4, repeat: Infinity }}
-                className="absolute -bottom-4 -left-4 glass rounded-2xl p-4 border border-emerald-500/30"
-              >
-                <div className="flex items-center gap-2">
-                  <Leaf className="w-5 h-5 text-emerald-400" />
-                  <span className="text-sm font-medium text-white">Sustainable</span>
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
+              <div className="text-3xl font-bold text-slate-800 dark:text-white mb-1">{stat.value}</div>
+              <div className="text-slate-600 dark:text-slate-400 text-sm">{stat.label}</div>
+            </motion.div>
+          ))}
         </div>
+
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-slate-100 dark:border-slate-700 shadow-xl">
+          <h3 className="text-2xl font-bold text-slate-800 dark:text-white mb-8 text-center">Our Journey</h3>
+          <div className="grid md:grid-cols-4 gap-6">
+            {timeline.map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="relative"
+              >
+                <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-green-500 dark:bg-green-400" />
+                {index < timeline.length - 1 && (
+                  <div className="hidden md:block absolute top-0 left-1/2 -translate-x-1/2 w-full h-0.5 bg-green-200 dark:bg-green-800" style={{ transform: 'translateY(7px)' }} />
+                )}
+                <div className="pt-6">
+                  <div className="text-green-600 dark:text-green-400 font-bold mb-2">{item.year}</div>
+                  <div className="text-slate-800 dark:text-white font-semibold mb-2">{item.title}</div>
+                  <p className="text-slate-600 dark:text-slate-400 text-sm">{item.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mt-16 grid md:grid-cols-3 gap-6">
+          {[
+            { icon: Sprout, title: 'Mission', description: 'To make AI-powered farming tools accessible to every farmer in India, helping them achieve better yields with sustainable water usage.' },
+            { icon: Leaf, title: 'Vision', description: 'To be the leading agricultural technology platform in India, bridging the gap between traditional farming and modern AI solutions.' },
+            { icon: Award, title: 'Values', description: 'We believe in sustainable farming, data-driven decisions, and empowering rural communities through technology and knowledge.' },
+          ].map((item, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-3xl p-6 border border-slate-100 dark:border-slate-700 shadow-lg"
+            >
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center mb-4 shadow-lg">
+                <item.icon className="w-6 h-6 text-white" />
+              </div>
+              <h4 className="text-xl font-bold text-slate-800 dark:text-white mb-2">{item.title}</h4>
+              <p className="text-slate-600 dark:text-slate-400 text-sm">{item.description}</p>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </section>
   )

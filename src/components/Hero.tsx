@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Droplets, ArrowRight, ChevronDown, Sprout, CloudRain, Users } from 'lucide-react'
+import { Sprout, ArrowDown, Cpu, Wifi, Database, Leaf, ChevronDown } from 'lucide-react'
 
 export default function Hero() {
-  const [droplets, setDroplets] = useState<{ id: number; left: number; delay: number; size: number }[]>([])
+  const [particles, setParticles] = useState<{ id: number; left: number; delay: number; size: number }[]>([])
 
   useEffect(() => {
-    const newDroplets = Array.from({ length: 15 }, (_, i) => ({
+    const newParticles = Array.from({ length: 15 }, (_, i) => ({
       id: i,
       left: Math.random() * 100,
-      delay: Math.random() * 10,
-      size: Math.random() * 20 + 10,
+      delay: Math.random() * 5,
+      size: Math.random() * 8 + 4,
     }))
-    setDroplets(newDroplets)
+    setParticles(newParticles)
   }, [])
 
   const scrollToSection = (href: string) => {
@@ -23,256 +23,124 @@ export default function Hero() {
   }
 
   return (
-    <section
-      id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
-    >
-      {/* Animated Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800">
-        {/* Water waves */}
-        <div className="absolute bottom-0 left-0 right-0 h-64 opacity-30">
-          <svg
-            className="absolute bottom-0 w-full animate-wave"
-            viewBox="0 0 1440 320"
-            preserveAspectRatio="none"
-          >
-            <path
-              fill="#0EA5E9"
-              fillOpacity="0.3"
-              d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-            />
-          </svg>
-        </div>
-        
-        {/* Floating droplets */}
-        {droplets.map((droplet) => (
-          <div
-            key={droplet.id}
-            className="droplet"
+    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-green-50 via-blue-50 to-amber-50 dark:from-slate-900 dark:via-slate-900late-800 fresh dark:to-s-grid">
+        {particles.map((particle) => (
+          <motion.div
+            key={particle.id}
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: [0, 0.8, 0], y: [-100, 100] }}
+            transition={{ duration: 8, delay: particle.delay, repeat: Infinity, ease: 'linear' }}
+            className="absolute rounded-full"
             style={{
-              left: `${droplet.left}%`,
-              animationDelay: `${droplet.delay}s`,
-              width: droplet.size,
-              height: droplet.size,
+              left: `${particle.left}%`,
+              width: particle.size,
+              height: particle.size,
+              background: particle.id % 3 === 0 ? '#22C55E' : particle.id % 3 === 1 ? '#0EA5E9' : '#F59E0B',
             }}
           />
         ))}
-
-        {/* Gradient orbs */}
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-          className="absolute top-1/4 -left-32 w-96 h-96 bg-sky-500/20 rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.2, 0.4, 0.2],
-          }}
-          transition={{
-            duration: 5,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-          className="absolute bottom-1/4 -right-32 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl"
-        />
+        <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }} className="absolute top-1/4 -left-32 w-96 h-96 bg-green-200/50 dark:bg-green-500/20 rounded-full blur-3xl" />
+        <motion.div animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.4, 0.2] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }} className="absolute bottom-1/4 -right-32 w-96 h-96 bg-blue-200/50 dark:bg-blue-500/20 rounded-full blur-3xl" />
+        <motion.div animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.3, 0.1] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-100/30 dark:bg-amber-500/10 rounded-full blur-3xl" />
       </div>
 
-      {/* Content */}
       <div className="container-custom relative z-10 px-4 md:px-8 py-32">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center lg:text-left"
-          >
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-500/10 border border-sky-500/30 mb-6"
-            >
-              <Droplets className="w-4 h-4 text-sky-400" />
-              <span className="text-sky-400 text-sm font-medium">Smart Water Management</span>
+          <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="text-center lg:text-left">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-700 mb-6">
+              <motion.div animate={{ rotate: 360 }} transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}>
+                <Cpu className="w-4 h-4 text-green-600 dark:text-green-400" />
+              </motion.div>
+              <span className="text-green-700 dark:text-green-400 text-sm font-medium">AI-Powered Farm Assistant</span>
             </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-bold font-['Outfit'] leading-tight mb-6"
-            >
-              Smart Water Management for{' '}
-              <span className="gradient-text">Farmers</span>
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-4xl md:text-5xl lg:text-6xl font-bold font-['Outfit'] leading-tight mb-6 text-slate-800 dark:text-white">
+              Smart Farming with <span className="gradient-text">AI Power</span>
             </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="text-lg md:text-xl text-slate-400 mb-8 max-w-xl mx-auto lg:mx-0"
-            >
-              JalSakhi is an end-to-end smart water management platform that delivers 
-              crop water recommendations, soil moisture forecasts, and village-level 
-              water allocation insights.
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="text-lg md:text-xl text-slate-600 dark:text-slate-300 mb-8 max-w-xl mx-auto lg:mx-0">
+              JalSakhi is your intelligent farming companion that provides crop recommendations, soil analysis, and village-level water allocation using advanced ML technology.
             </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
-            >
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => scrollToSection('#download')}
-                className="btn-primary inline-flex items-center justify-center gap-2"
-              >
-                Download App
-                <ArrowRight className="w-5 h-5" />
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => scrollToSection('#download')} className="btn-primary inline-flex items-center justify-center gap-2">
+                Download App <ArrowDown className="w-5 h-5" />
               </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => scrollToSection('#features')}
-                className="btn-secondary inline-flex items-center justify-center gap-2"
-              >
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => scrollToSection('#features')} className="btn-secondary inline-flex items-center justify-center gap-2">
                 Learn More
               </motion.button>
             </motion.div>
-
-            {/* Stats */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="mt-12 grid grid-cols-3 gap-6"
-            >
-              {[
-                { icon: Sprout, label: 'Crops', value: '50+' },
-                { icon: CloudRain, label: 'Accuracy', value: '95%' },
-                { icon: Users, label: 'Farmers', value: '10K+' },
-              ].map((stat, index) => (
-                <div key={index} className="text-center">
-                  <stat.icon className="w-6 h-6 text-sky-500 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-white">{stat.value}</div>
-                  <div className="text-sm text-slate-400">{stat.label}</div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="mt-10 flex flex-wrap gap-4 justify-center lg:justify-start">
+              {[{ icon: Wifi, label: 'IoT Connected' }, { icon: Database, label: 'Real-time Data' }, { icon: Cpu, label: 'ML Powered' }].map((feature, index) => (
+                <div key={index} className="flex items-center gap-2 px-3 py-2 bg-white/60 dark:bg-slate-800/60 rounded-lg border border-green-100 dark:border-slate-700 shadow-sm">
+                  <feature.icon className="w-4 h-4 text-green-600 dark:text-green-400" />
+                  <span className="text-sm text-slate-700 dark:text-slate-300 font-medium">{feature.label}</span>
                 </div>
               ))}
             </motion.div>
           </motion.div>
 
-          {/* Right Content - Phone Mockup */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex justify-center lg:justify-end"
-          >
+          <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="flex justify-center lg:justify-end">
             <div className="relative">
-              {/* Phone frame */}
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                className="relative w-72 md:w-80 lg:w-96"
-              >
-                {/* Phone body */}
-                <div className="bg-slate-800 rounded-[3rem] p-4 shadow-2xl shadow-sky-500/20 border border-slate-700">
-                  {/* Notch */}
-                  <div className="bg-slate-900 rounded-full w-32 h-7 mx-auto mb-4 flex items-center justify-center">
-                    <div className="w-20 h-2 bg-slate-800 rounded-full" />
+              <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }} className="relative w-72 md:w-80 lg:w-96">
+                <div className="bg-white dark:bg-slate-800 rounded-[3rem] p-4 shadow-2xl shadow-green-200/50 dark:shadow-green-900/30 border border-green-100 dark:border-slate-700">
+                  <div className="bg-slate-100 dark:bg-slate-700 rounded-full w-32 h-7 mx-auto mb-4 flex items-center justify-center">
+                    <div className="w-20 h-2 bg-slate-200 dark:bg-slate-600 rounded-full" />
                   </div>
-                  
-                  {/* Screen */}
-                  <div className="bg-gradient-to-br from-sky-900 to-slate-900 rounded-[2.5rem] overflow-hidden aspect-[9/19] relative">
-                    {/* App Header */}
-                    <div className="bg-sky-500/20 p-4 backdrop-blur-sm">
+                  <div className="bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-900/30 dark:to-blue-900/30 rounded-[2.5rem] overflow-hidden aspect-[9/19] relative">
+                    <div className="bg-green-100/80 dark:bg-green-800/30 p-4 backdrop-blur-sm">
                       <div className="flex items-center gap-2">
-                        <Droplets className="w-6 h-6 text-sky-400" />
-                        <span className="text-white font-bold">JalSakhi</span>
+                        <Sprout className="w-6 h-6 text-green-600 dark:text-green-400" />
+                        <span className="text-slate-800 dark:text-white font-bold">JalSakhi</span>
                       </div>
                     </div>
-                    
-                    {/* App Content Mockup */}
                     <div className="p-4 space-y-4">
-                      <div className="bg-slate-800/50 rounded-2xl p-4">
-                        <div className="text-sm text-slate-400 mb-1">Today's Water Need</div>
-                        <div className="text-3xl font-bold text-sky-400">24.5 mm</div>
-                        <div className="text-xs text-emerald-400">↓ 12% from yesterday</div>
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="bg-slate-800/50 rounded-xl p-3">
-                          <CloudRain className="w-5 h-5 text-sky-400 mb-1" />
-                          <div className="text-xs text-slate-400">Soil Moisture</div>
-                          <div className="text-sm font-semibold text-white">68%</div>
+                      <div className="bg-white/70 dark:bg-slate-800/70 rounded-2xl p-4 shadow-sm">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Leaf className="w-4 h-4 text-green-600 dark:text-green-400" />
+                          <div className="text-sm text-slate-500 dark:text-slate-400">Crop Status</div>
                         </div>
-                        <div className="bg-slate-800/50 rounded-xl p-3">
-                          <Sprout className="w-5 h-5 text-emerald-400 mb-1" />
-                          <div className="text-xs text-slate-400">Crop Status</div>
-                          <div className="text-sm font-semibold text-white">Healthy</div>
+                        <div className="text-2xl font-bold text-green-600 dark:text-green-400">Wheat - Healthy</div>
+                        <div className="text-xs text-green-500 dark:text-green-500">↑ Optimal growth</div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="bg-white/70 dark:bg-slate-800/70 rounded-xl p-3 shadow-sm">
+                          <div className="w-8 h-8 rounded-lg bg-green-100 dark:bg-green-900/50 flex items-center justify-center mb-2">
+                            <Sprout className="w-4 h-4 text-green-600 dark:text-green-400" />
+                          </div>
+                          <div className="text-xs text-slate-500 dark:text-slate-400">Water Need</div>
+                          <div className="text-sm font-semibold text-slate-700 dark:text-slate-300">24.5 mm</div>
+                        </div>
+                        <div className="bg-white/70 dark:bg-slate-800/70 rounded-xl p-3 shadow-sm">
+                          <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center mb-2">
+                            <Cpu className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                          </div>
+                          <div className="text-xs text-slate-500 dark:text-slate-400">AI Score</div>
+                          <div className="text-sm font-semibold text-slate-700 dark:text-slate-300">92%</div>
                         </div>
                       </div>
                     </div>
-
-                    {/* Bottom nav */}
-                    <div className="absolute bottom-0 left-0 right-0 bg-slate-800/80 backdrop-blur-sm p-4 flex justify-around">
+                    <div className="absolute bottom-0 left-0 right-0 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm p-4 flex justify-around">
                       {[1, 2, 3, 4].map((i) => (
-                        <div key={i} className={`w-6 h-6 rounded-full ${i === 1 ? 'bg-sky-500' : 'bg-slate-600'}`} />
+                        <div key={i} className={`w-6 h-6 rounded-full ${i === 1 ? 'bg-green-500' : 'bg-slate-300 dark:bg-slate-600'}`} />
                       ))}
                     </div>
                   </div>
                 </div>
-                
-                {/* Glow effect */}
-                <div className="absolute inset-0 bg-sky-500/20 blur-3xl -z-10 rounded-full" />
+                <div className="absolute inset-0 bg-green-200/30 dark:bg-green-900/30 blur-3xl -z-10 rounded-full" />
               </motion.div>
-
-              {/* Floating elements */}
-              <motion.div
-                animate={{ y: [0, -15, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-                className="absolute -left-8 top-1/4 glass rounded-2xl p-4"
-              >
-                <Droplets className="w-8 h-8 text-sky-500" />
+              <motion.div animate={{ y: [0, -15, 0], rotate: [0, 10, 0] }} transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }} className="absolute -left-8 top-1/4 glass dark:glass-dark rounded-2xl p-4 border border-green-200 dark:border-green-800 shadow-lg">
+                <Sprout className="w-8 h-8 text-green-600 dark:text-green-400" />
               </motion.div>
-              
-              <motion.div
-                animate={{ y: [0, 15, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                className="absolute -right-4 bottom-1/4 glass rounded-2xl p-4"
-              >
-                <Sprout className="w-8 h-8 text-emerald-500" />
+              <motion.div animate={{ y: [0, 15, 0], rotate: [0, -10, 0] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }} className="absolute -right-4 bottom-1/4 glass dark:glass-dark rounded-2xl p-4 border border-blue-200 dark:border-blue-800 shadow-lg">
+                <Cpu className="w-8 h-8 text-blue-600 dark:text-blue-400" />
               </motion.div>
             </div>
           </motion.div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-      >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          onClick={() => scrollToSection('#features')}
-          className="cursor-pointer"
-        >
-          <ChevronDown className="w-8 h-8 text-slate-400" />
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }} className="absolute bottom-8 left-1/2 -translate-x-1/2">
+        <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }} onClick={() => scrollToSection('#features')} className="cursor-pointer">
+          <ChevronDown className="w-8 h-8 text-slate-400 dark:text-slate-500" />
         </motion.div>
       </motion.div>
     </section>
