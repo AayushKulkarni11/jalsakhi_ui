@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Sprout, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'
+import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'
 
 const quickLinks = [
   { name: 'Home', href: '#home' },
@@ -45,9 +45,11 @@ export default function Footer() {
             className="lg:col-span-1"
           >
             <div className="flex items-center gap-2 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg">
-                <Sprout className="w-6 h-6 text-white" />
-              </div>
+              <img 
+                src="/images/jalsakhi_logo.png" 
+                alt="JalSakhi Logo" 
+                className="h-10 w-auto object-contain"
+              />
               <span className="text-2xl font-bold font-['Outfit']">
                 <span className="text-green-400">Jal</span>
                 <span className="text-white">Sakhi</span>

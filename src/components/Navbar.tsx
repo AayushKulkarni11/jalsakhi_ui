@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Sprout, Leaf, Sun, Moon } from 'lucide-react'
+import { Menu, X, Sun, Moon } from 'lucide-react'
 
 const navItems = [
   { name: 'Home', href: '#home' },
@@ -52,18 +52,11 @@ export default function Navbar({ darkMode, setDarkMode }: NavbarProps) {
             className="flex items-center gap-2 cursor-pointer"
             onClick={() => scrollToSection('#home')}
           >
-            <div className="relative">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg">
-                <Sprout className="w-6 h-6 text-white" />
-              </div>
-              <motion.div
-                animate={{ rotate: [0, 10, -10, 0] }}
-                transition={{ duration: 3, repeat: Infinity }}
-                className="absolute -top-1 -right-1"
-              >
-                <Leaf className={`w-4 h-4 ${darkMode ? 'text-green-400' : 'text-green-600'}`} />
-              </motion.div>
-            </div>
+            <img 
+              src="/images/jalsakhi_logo.png" 
+              alt="JalSakhi Logo" 
+              className="h-10 w-auto object-contain"
+            />
             <span className="text-2xl font-bold font-['Outfit']">
               <span className={darkMode ? 'text-green-400' : 'text-green-600'}>Jal</span>
               <span className={darkMode ? 'text-white' : 'text-slate-800'}>Sakhi</span>

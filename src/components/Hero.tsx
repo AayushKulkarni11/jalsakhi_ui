@@ -1,9 +1,22 @@
-import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
-import { Sprout, ArrowDown, Cpu, Wifi, Database, Leaf, ChevronDown } from 'lucide-react'
+import { useEffect, useState, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Sprout, ArrowDown, Cpu, Wifi, Database, Leaf, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react'
+
+const appImages = [
+  '/images/WhatsApp Image 2026-02-22 at 12.13.31.jpeg',
+  '/images/WhatsApp Image 2026-02-22 at 12.13.32 (1).jpeg',
+  '/images/WhatsApp Image 2026-02-22 at 12.13.32 (2).jpeg',
+  '/images/WhatsApp Image 2026-02-22 at 12.13.32.jpeg',
+  '/images/WhatsApp Image 2026-02-22 at 12.13.33.jpeg',
+]
 
 export default function Hero() {
   const [particles, setParticles] = useState<{ id: number; left: number; delay: number; size: number }[]>([])
+  const [currentImage, setCurrentImage] = useState(0)
+  const [direction, setDirection] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
+  const touchStartX = useRef(0)
+  const touchEndX = useRef(0)
 
   useEffect(() => {
     const newParticles = Array.from({ length: 15 }, (_, i) => ({
@@ -15,6 +28,45 @@ export default function Hero() {
     setParticles(newParticles)
   }, [])
 
+  // Auto-swipe functionality
+  useEffect(() => {
+    if (isPaused) return
+    const interval = setInterval(() => {
+      setDirection(1)
+      setCurrentImage((prev) => (prev + 1) % appImages.length)
+    }, 3000) // Swipe every 3 seconds
+    return () => clearInterval(interval)
+  }, [isPaused])
+
+  const nextImage = () => {
+    setDirection(1)
+    setCurrentImage((prev) => (prev + 1) % appImages.length)
+  }
+
+  const prevImage = () => {
+    setDirection(-1)
+    setCurrentImage((prev) => (prev - 1 + appImages.length) % appImages.length)
+  }
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX
+  }
+
+  const handleTouchEnd = () => {
+    const diff = touchStartX.current - touchEndX.current
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        nextImage()
+      } else {
+        prevImage()
+      }
+    }
+  }
+
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href)
     if (element) {
@@ -22,9 +74,24 @@ export default function Hero() {
     }
   }
 
+  const variants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 300 : -300,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: number) => ({
+      x: direction < 0 ? 300 : -300,
+      opacity: 0,
+    }),
+  }
+
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-green-50 via-blue-50 to-amber-50 dark:from-slate-900 dark:via-slate-900late-800 fresh dark:to-s-grid">
+      <div className="absolute inset-0 bg-gradient-to-br from-green-50 via-blue-50 to-amber-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800">
         {particles.map((particle) => (
           <motion.div
             key={particle.id}
@@ -85,42 +152,75 @@ export default function Hero() {
                   <div className="bg-slate-100 dark:bg-slate-700 rounded-full w-32 h-7 mx-auto mb-4 flex items-center justify-center">
                     <div className="w-20 h-2 bg-slate-200 dark:bg-slate-600 rounded-full" />
                   </div>
-                  <div className="bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-900/30 dark:to-blue-900/30 rounded-[2.5rem] overflow-hidden aspect-[9/19] relative">
-                    <div className="bg-green-100/80 dark:bg-green-800/30 p-4 backdrop-blur-sm">
-                      <div className="flex items-center gap-2">
-                        <Sprout className="w-6 h-6 text-green-600 dark:text-green-400" />
-                        <span className="text-slate-800 dark:text-white font-bold">JalSakhi</span>
-                      </div>
+                  <div 
+                    className="bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-900/30 dark:to-blue-900/30 rounded-[2.5rem] overflow-hidden aspect-[9/19] relative"
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleTouchEnd}
+                    onMouseEnter={() => setIsPaused(true)}
+                    onMouseLeave={() => setIsPaused(false)}
+                  >
+                    {/* App Images Carousel */}
+                    <div className="w-full h-full relative">
+                      <AnimatePresence initial={false} custom={direction} mode="wait">
+                        <motion.img
+                          key={currentImage}
+                          src={appImages[currentImage]}
+                          alt="JalSakhi App"
+                          custom={direction}
+                          variants={variants}
+                          initial="enter"
+                          animate="center"
+                          exit="exit"
+                          transition={{
+                            x: { type: 'spring', stiffness: 300, damping: 30 },
+                            opacity: { duration: 0.2 },
+                          }}
+                          className="absolute inset-0 w-full h-full object-cover"
+                          drag="x"
+                          dragConstraints={{ left: 0, right: 0 }}
+                          dragElastic={1}
+                          onDragEnd={(e, { offset, velocity }) => {
+                            const swipe = Math.abs(offset.x) * velocity.x
+                            if (swipe < -10000) {
+                              nextImage()
+                            } else if (swipe > 10000) {
+                              prevImage()
+                            }
+                          }}
+                        />
+                      </AnimatePresence>
+                      
+                      {/* Navigation Arrows */}
+                      <button 
+                        onClick={prevImage}
+                        className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 dark:bg-slate-800/80 flex items-center justify-center shadow-md opacity-0 hover:opacity-100 transition-opacity"
+                      >
+                        <ChevronLeft className="w-4 h-4 text-slate-700 dark:text-slate-300" />
+                      </button>
+                      <button 
+                        onClick={nextImage}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 dark:bg-slate-800/80 flex items-center justify-center shadow-md opacity-0 hover:opacity-100 transition-opacity"
+                      >
+                        <ChevronRight className="w-4 h-4 text-slate-700 dark:text-slate-300" />
+                      </button>
                     </div>
-                    <div className="p-4 space-y-4">
-                      <div className="bg-white/70 dark:bg-slate-800/70 rounded-2xl p-4 shadow-sm">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Leaf className="w-4 h-4 text-green-600 dark:text-green-400" />
-                          <div className="text-sm text-slate-500 dark:text-slate-400">Crop Status</div>
-                        </div>
-                        <div className="text-2xl font-bold text-green-600 dark:text-green-400">Wheat - Healthy</div>
-                        <div className="text-xs text-green-500 dark:text-green-500">↑ Optimal growth</div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="bg-white/70 dark:bg-slate-800/70 rounded-xl p-3 shadow-sm">
-                          <div className="w-8 h-8 rounded-lg bg-green-100 dark:bg-green-900/50 flex items-center justify-center mb-2">
-                            <Sprout className="w-4 h-4 text-green-600 dark:text-green-400" />
-                          </div>
-                          <div className="text-xs text-slate-500 dark:text-slate-400">Water Need</div>
-                          <div className="text-sm font-semibold text-slate-700 dark:text-slate-300">24.5 mm</div>
-                        </div>
-                        <div className="bg-white/70 dark:bg-slate-800/70 rounded-xl p-3 shadow-sm">
-                          <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center mb-2">
-                            <Cpu className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                          </div>
-                          <div className="text-xs text-slate-500 dark:text-slate-400">AI Score</div>
-                          <div className="text-sm font-semibold text-slate-700 dark:text-slate-300">92%</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="absolute bottom-0 left-0 right-0 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm p-4 flex justify-around">
-                      {[1, 2, 3, 4].map((i) => (
-                        <div key={i} className={`w-6 h-6 rounded-full ${i === 1 ? 'bg-green-500' : 'bg-slate-300 dark:bg-slate-600'}`} />
+
+                    {/* Page Indicators */}
+                    <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+                      {appImages.map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => {
+                            setDirection(index > currentImage ? 1 : -1)
+                            setCurrentImage(index)
+                          }}
+                          className={`w-2 h-2 rounded-full transition-all ${
+                            index === currentImage 
+                              ? 'bg-green-500 w-6' 
+                              : 'bg-slate-300 dark:bg-slate-600'
+                          }`}
+                        />
                       ))}
                     </div>
                   </div>
